@@ -5,6 +5,9 @@ const aliensImg = [
   "img/monster-2.png",
   "img/monster-3.png",
 ];
+const instructionsText = document.querySelector(".game-instructions");
+const startButton = document.querySelector(".start-button");
+let alienInterval;
 
 function flyShip(event) {
   if (event.key === "ArrowUp") {
@@ -85,22 +88,22 @@ function moveLaser(laser) {
 
 function createAliens() {
   let newAlien = document.createElement("img");
-  let alienSprite = aliensImg[Math.floor(Math.random() * aliensImg.length)]; //sorteio de imagens
+  let alienSprite = aliensImg[Math.floor(Math.random() * aliensImg.length)];
   newAlien.src = alienSprite;
   newAlien.classList.add("alien");
   newAlien.classList.add("alien-transition");
   newAlien.style.left = "370px";
-  newAlien.style.top = `${Math.floor(Math.random() * 330) + 30}px`;
+  newAlien.style.top = `${Math.floor(Math.random() * 10 + 1) * 50}px`;
   playArea.appendChild(newAlien);
   moveAlien(newAlien);
 }
 
 function moveAlien(alien) {
-  let moveAlienInterval = setInterval(() => {
+  setInterval(() => {
     let xPosition = parseInt(
       window.getComputedStyle(alien).getPropertyValue("left")
     );
-    if (xPosition <= 50) {
+    if (xPosition <= 0) {
       if (Array.from(alien.classList).includes("dead-alien")) {
         alien.remove();
       } else {
@@ -115,7 +118,6 @@ function moveAlien(alien) {
 function checkLaserCollision(laser, alien) {
   let laserTop = parseInt(laser.style.top);
   let laserLeft = parseInt(laser.style.left);
-  let laserBottom = laserTop - 20;
   let alienTop = parseInt(alien.style.top);
   let alienLeft = parseInt(alien.style.left);
   let alienBottom = alienTop - 30;
@@ -130,4 +132,30 @@ function checkLaserCollision(laser, alien) {
   }
 }
 
-window.addEventListener("keydown", flyShip);
+startButton.addEventListener("click", (event) => {
+  playGame();
+});
+
+function playGame() {
+  startButton.style.display = "none";
+  instructionsText.style.display = "none";
+  window.addEventListener("keydown", flyShip);
+  alienInterval = setInterval(() => {
+    createAliens();
+  }, 2000);
+}
+
+function gameOver() {
+  window.removeEventListener("keydown", flyShip);
+  clearInterval(alienInterval);
+  let aliens = document.querySelectorAll(".alien");
+  aliens.forEach((alien) => alien.remove());
+  let lasers = document.querySelectorAll(".laser");
+  lasers.forEach((laser) => laser.remove());
+  setTimeout(() => {
+    alert("game over!");
+    yourShip.style.top = "250px";
+    startButton.style.display = "block";
+    instructionsText.style.display = "block";
+  });
+}
