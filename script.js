@@ -10,6 +10,7 @@ const startButton = document.querySelector(".start-button");
 const score = document.querySelector(".score");
 let scoreValue = 0;
 let alienInterval;
+let respawTime = 2000;
 
 function flyShip(event) {
   if (event.key === "ArrowUp") {
@@ -125,7 +126,9 @@ function checkLaserCollision(laser, alien) {
   let alienBottom = alienTop - 30;
   if (laserLeft != 340 && laserLeft + 40 >= alienLeft) {
     if (laserTop <= alienTop && laserTop >= alienBottom) {
-      updateScore();
+      let randomEnemyScore = Math.floor(Math.random() * 4 + 1) * 50;
+      console.log(randomEnemyScore);
+      updateScore(randomEnemyScore);
       return true;
     } else {
       return false;
@@ -135,10 +138,23 @@ function checkLaserCollision(laser, alien) {
   }
 }
 
-function updateScore() {
-  scoreValue += 50;
+function updateScore(value) {
+  scoreValue += value;
   let formattedScore = scoreValue.toString().padStart(5, "0");
   score.innerHTML = `Score: ${formattedScore}`;
+  increaseDifficult();
+}
+
+function increaseDifficult() {
+  if (scoreValue >= 1500 && scoreValue <= 3000) {
+    respawTime = 1000;
+  } else if (scoreValue > 3000) {
+    respawTime = 500;
+  } else {
+    respawTime = 2000;
+  }
+
+  updatealienInterval();
 }
 
 startButton.addEventListener("click", (event) => {
@@ -149,9 +165,14 @@ function playGame() {
   startButton.style.display = "none";
   instructionsText.style.display = "none";
   window.addEventListener("keydown", flyShip);
+  updatealienInterval();
+}
+
+function updatealienInterval() {
+  clearInterval(alienInterval);
   alienInterval = setInterval(() => {
     createAliens();
-  }, 2000);
+  }, respawTime);
 }
 
 function gameOver() {
