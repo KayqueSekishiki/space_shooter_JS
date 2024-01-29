@@ -2,6 +2,7 @@ body {
   height: 100vh;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0;
@@ -10,7 +11,14 @@ body {
   background-color: cornflowerblue;
 }
 
+.score {
+  font-size: 3rem;
+  font-family: fantasy;
+  margin-bottom: 2rem;
+}
+
 #main-play-area {
+  position: relative;
   background-color: black;
   background-image: url(img/space.png);
   height: 600px;
@@ -18,10 +26,14 @@ body {
 }
 
 .game-instructions {
-  position: relative;
+  position: absolute;
   color: white;
   left: 7rem;
-  top: 0px;
+  top: 4rem;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 10rem;
 }
 
 .start-button {

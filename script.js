@@ -7,6 +7,8 @@ const aliensImg = [
 ];
 const instructionsText = document.querySelector(".game-instructions");
 const startButton = document.querySelector(".start-button");
+const score = document.querySelector(".score");
+let scoreValue = 0;
 let alienInterval;
 
 function flyShip(event) {
@@ -66,7 +68,7 @@ function createLaserElement() {
 }
 
 function moveLaser(laser) {
-  let laserInterval = setInterval(() => {
+  setInterval(() => {
     let xPosition = parseInt(laser.style.left);
     let aliens = document.querySelectorAll(".alien");
 
@@ -123,6 +125,7 @@ function checkLaserCollision(laser, alien) {
   let alienBottom = alienTop - 30;
   if (laserLeft != 340 && laserLeft + 40 >= alienLeft) {
     if (laserTop <= alienTop && laserTop >= alienBottom) {
+      updateScore();
       return true;
     } else {
       return false;
@@ -130,6 +133,12 @@ function checkLaserCollision(laser, alien) {
   } else {
     return false;
   }
+}
+
+function updateScore() {
+  scoreValue += 50;
+  let formattedScore = scoreValue.toString().padStart(5, "0");
+  score.innerHTML = `Score: ${formattedScore}`;
 }
 
 startButton.addEventListener("click", (event) => {
