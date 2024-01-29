@@ -16,7 +16,7 @@ function flyShip(event) {
 
 function moveUp() {
   let topPosition = getComputedStyle(yourShip).getPropertyValue("top");
-  if (topPosition === "0px") {
+  if (topPosition === "50px") {
     return;
   } else {
     let position = parseInt(topPosition);
@@ -24,3 +24,16 @@ function moveUp() {
     yourShip.style.top = `${position}px`;
   }
 }
+
+function moveDown() {
+  let topPosition = getComputedStyle(yourShip).getPropertyValue("top");
+  if (topPosition === "500px") {
+    return;
+  } else {
+    let position = parseInt(topPosition);
+    position += 50;
+    yourShip.style.top = `${position}px`;
+  }
+}
+
+window.addEventListener("keydown", flyShip);
