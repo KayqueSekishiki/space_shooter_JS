@@ -183,7 +183,7 @@ function gameOver() {
   let lasers = document.querySelectorAll(".laser");
   lasers.forEach((laser) => laser.remove());
   setTimeout(() => {
-    alert("game over!");
+    alert(`GAME OVER! \nSua pontuação final foi de ${scoreValue} pontos`);
     yourShip.style.top = "250px";
     startButton.style.display = "block";
     instructionsText.style.display = "block";
